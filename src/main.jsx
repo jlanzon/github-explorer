@@ -9,9 +9,9 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <PostHogProvider
-      apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
+      apiKey={phc_4YIRqW5yabGNLn1k3NPI8vRPGVE7SIpyuPXoe3yIItI}
       options={{
-        api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+        api_host: "https://eu.i.posthog.com",
         defaults: "2025-05-24",
         capture_exceptions: true, // This enables capturing exceptions using Error Tracking
         debug: import.meta.env.MODE === "development",

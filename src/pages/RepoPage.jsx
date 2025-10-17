@@ -24,6 +24,10 @@ export default function RepoPage() {
     isLoading: repoLoad,
   } = useSWR(`/api/github/repo/${owner}/${name}`, fetcher);
 
+  if (repo) {
+    console.log("Repo data:", repo);
+  }
+
   const {
     data: readme,
     error: mdErr,
@@ -33,6 +37,9 @@ export default function RepoPage() {
   if (repoLoad) return <Skeleton count={3} />;
   if (repoErr) return <ErrorMessage error={repoErr} />;
 
+  // DEV NOTE
+  // With the way this is set up, without a proxy i mean, the api request wont work
+  // so add your key VITE_GITHUB_TOKEN= to .env and change fetcher the vite config key
   return (
     <article className="prose dark:prose-invert max-w-none">
       <h1 className="mb-2">{repo.full_name}</h1>
