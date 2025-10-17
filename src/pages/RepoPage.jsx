@@ -4,6 +4,11 @@ import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import Skeleton from "../components/Skeleton";
 import ErrorMessage from "../components/ErrorMessage";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 const fetcher = async (url, opts) => {
   const res = await fetch(url, opts);
@@ -29,6 +34,8 @@ const K = new Intl.NumberFormat("en-GB");
 // DEV NOTE
 // With the way this is set up, without a proxy i mean, the api request wont work
 // so add your key VITE_GITHUB_TOKEN= to .env and change fetcher the vite config key
+
+// AI helped with mapping data here
 
 export default function RepoPage() {
   const { owner, name } = useParams();
@@ -205,7 +212,52 @@ export default function RepoPage() {
       <h2>README</h2>
       {mdLoad && <Skeleton count={6} />}
       {mdErr && <p className="text-red-600">No README found.</p>}
-      {readme && <ReactMarkdown>{readme}</ReactMarkdown>}
+      {readme && (
+        // https://github.com/chrisHalogen/HID-Tutorials/tree/main/react-markdown-render
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            code({
+              node,
+              inline,
+              className,
+              children: codeChildren,
+              ...props
+            }) {
+              const match = /language-(\w+)/.exec(className || "");
+
+              return !inline && match ? (
+                <SyntaxHighlighter
+                  style={dracula}
+                  PreTag="div"
+                  language={match[1]}
+                  {...props}
+                >
+                  {String(codeChildren).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              ) : (
+                <code className={className} {...props}>
+                  {codeChildren}
+                </code>
+              );
+            },
+
+            p({ node, children, ...props }) {
+              return (
+                <p
+                  style={{ marginBottom: "0.5rem", whiteSpace: "pre-line" }}
+                  {...props}
+                >
+                  {children}
+                </p>
+              );
+            },
+          }}
+        >
+          {readme}
+        </ReactMarkdown>
+      )}
     </article>
   );
 }
