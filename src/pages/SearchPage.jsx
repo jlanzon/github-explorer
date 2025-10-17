@@ -11,7 +11,7 @@ import Pagination from "../components/Pagination";
 
 export default function SearchPage() {
   const [params, setParams] = useSearchParams();
-  const q = params.get("q") || "react";
+  const q = params.get("q") || "jlanzon/github-explorer";
   const page = Number(params.get("page") || 1);
   const language = params.get("lang") || "";
   const minStars = params.get("stars") || "";

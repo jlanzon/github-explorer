@@ -9,7 +9,7 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <PostHogProvider
-      apiKey={phc_4YIRqW5yabGNLn1k3NPI8vRPGVE7SIpyuPXoe3yIItI}
+      apiKey={"phc_4YIRqW5yabGNLn1k3NPI8vRPGVE7SIpyuPXoe3yIItI"}
       options={{
         api_host: "https://eu.i.posthog.com",
         defaults: "2025-05-24",
@@ -23,3 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </PostHogProvider>
   </React.StrictMode>
 );
+
+// DEV NOTE
+// With the way this is set up, without a proxy i mean, the api request wont work
+// so add your key VITE_GITHUB_TOKEN= to .env and change fetcher the vite config key
