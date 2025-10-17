@@ -1,0 +1,38 @@
+{
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ],
+  "hosting": {
+    "site": "portfolio-63cbe-1688e",
+    "public": "dist",
+
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "/api/github/repo/**",
+        "function": {
+          "functionId": "githubRepoDetails",
+          "region": "europe-west2"
+        }
+      },
+      {
+        "source": "/api/github/readme/**",
+        "function": {
+          "functionId": "githubReadmeRaw",
+          "region": "europe-west2"
+        }
+      },
+      { "source": "**", "destination": "/index.html" }
+    ]
+  }
+}
